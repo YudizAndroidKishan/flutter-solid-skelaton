@@ -1,0 +1,16 @@
+{
+  "dart.flutterSdkPath": ".fvm/flutter_sdk",
+  // Remove .fvm files from search
+  "search.exclude": {
+    "**/.fvm": true
+  },
+  // Remove from file watching
+  "files.watcherExclude": {
+    "**/.fvm": true
+  },
+  "dart.previewLsp": true, // When there are multiple definitions (like an abstract method plus overrides),
+  // show them in a peek window so you can choose which one to go to.
+  "editor.gotoLocation.multipleDefinitions": "peek",
+  // Similarly, if you use "Go to Implementation" and there are multiple:
+  "editor.gotoLocation.multipleImplementations": "peek"
+}

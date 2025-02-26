@@ -1,0 +1,2 @@
+/Users/yudizsolutionsltd./StudioProjects/solid_skelaton/android/app/.cxx/Debug/4j2d555x/x86/CMakeFiles/rebuild_cache.dir
+/Users/yudizsolutionsltd./StudioProjects/solid_skelaton/android/app/.cxx/Debug/4j2d555x/x86/CMakeFiles/edit_cache.dir
