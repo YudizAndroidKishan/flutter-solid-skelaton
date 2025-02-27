@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 
 import '../core/constants/app_constants.dart';
-import '../core/navigation/go_router_service.dart';
+import '../core/di/di.dart';
 import '../core/navigation/router_service.dart';
 import 'theme.dart';
 import 'widgets/app_bloc_provider.dart';
 
 class MyApp extends StatelessWidget {
-  final RouterService routerService = GoRouterService();
+  final RouterService routerService = getIt<RouterService>();
 
   MyApp({super.key});
 

@@ -12,6 +12,8 @@ import '../api/api_client.dart';
 import '../api/dio_client.dart';
 import '../database/hive_database.dart';
 import '../database/local_database.dart';
+import '../navigation/go_router_service.dart';
+import '../navigation/router_service.dart';
 import '../utils/snackbar_utils.dart';
 import '../utils/validator_util.dart';
 
@@ -27,6 +29,10 @@ void setupDependencies() {
 
   getIt.registerLazySingleton<LocalDatabase>(
     () => HiveDatabase(),
+  );
+
+  getIt.registerLazySingleton<RouterService>(
+    () => GoRouterService(),
   );
 
   getIt.registerLazySingleton<ValidatorUtil>(
