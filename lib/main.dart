@@ -5,8 +5,9 @@ import 'app/app.dart' show MyApp;
 import 'core/bloc/app_bloc_observer.dart';
 import 'core/di/di.dart';
 
-void main() {
+Future<void> main() async {
   Bloc.observer = AppBlocObserver();
-  setupDependencies();
+  await setupDependencies();
+
   runApp(MyApp());
 }

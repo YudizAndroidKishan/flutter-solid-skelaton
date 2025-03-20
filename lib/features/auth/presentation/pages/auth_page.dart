@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:solid_skelaton/core/navigation/app_routes.dart';
 
 import '../../../../app/widgets/base_bloc_consumer.dart';
 import '../bloc_or_provider/auth_bloc.dart';
@@ -20,7 +21,7 @@ class AuthPage extends StatelessWidget {
       body: BaseBlocConsumer<AuthBloc, AuthState>(
         listener: (context, state) {
           if (state is AuthAuthenticated) {
-            context.go('/home');
+            context.go(AppRoutes.leaveListing);
           }
         },
         builder: (context, state) {

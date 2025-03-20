@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:solid_skelaton/app/widgets/app_loading.dart';
+import 'package:solid_skelaton/core/database/local_database.dart';
+import 'package:solid_skelaton/core/navigation/app_routes.dart';
 
 import '../../core/di/di.dart';
-import '../../features/auth/domain/entities/user.dart';
-import '../../features/auth/domain/usecases/get_current_user_usecase.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({Key? key}) : super(key: key);
@@ -20,25 +21,19 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   Future<void> _redirectUser() async {
-    // Retrieve the GetCurrentUserUseCase from your DI container.
-    final getCurrentUserUseCase = getIt<GetCurrentUserUseCase>();
+    String? token = getIt<LocalDatabase>().getToken();
 
-    // Attempt to retrieve the current user.
-    final User? user = await getCurrentUserUseCase();
-
-    // Optional: Add a delay to show the splash screen for a minimum duration.
     await Future.delayed(const Duration(seconds: 2));
 
-    // Check if the widget is still mounted before using the context.
     if (!mounted) return;
 
     // Redirect based on whether the user exists.
-    if (user != null) {
+    if (token != null) {
       // If a user is found, navigate to the home screen.
-      context.go('/home');
+      context.go(AppRoutes.leaveListing);
     } else {
       // Otherwise, navigate to the login screen.
-      context.go('/login');
+      context.go(AppRoutes.login);
     }
   }
 
@@ -46,7 +41,7 @@ class _SplashScreenState extends State<SplashScreen> {
   Widget build(BuildContext context) {
     return const Scaffold(
       body: Center(
-        child: CircularProgressIndicator(),
+        child: AppLoadingWidget(),
       ),
     );
   }

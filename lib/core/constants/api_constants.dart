@@ -7,4 +7,5 @@ class ApiConstants {
 
   // add additional API-related constants here
   static const String login = '$baseUrl/login';
+  static const String getLeaves = '$baseUrl/leaves';
 }

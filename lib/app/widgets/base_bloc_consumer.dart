@@ -33,7 +33,7 @@ class BaseBlocConsumer<B extends BlocBase<S>, S> extends StatelessWidget
     return BlocConsumer<B, S>(
       listener: (context, state) {
         if (state is ErrorState) {
-          final route = getRouteForError(state.message);
+          final route = getRouteForError(state.message, context);
           if (route != null) {
             context.go(route);
             return;

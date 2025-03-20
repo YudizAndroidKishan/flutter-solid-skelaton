@@ -7,6 +7,10 @@ class HiveDatabase implements LocalDatabase {
   static const String _boxName = 'appBox';
   Box? _box;
 
+  HiveDatabase() {
+    init();
+  }
+
   @override
   Future<void> init() async {
     // Initialize Hive with the application's document directory.
@@ -57,5 +61,23 @@ class HiveDatabase implements LocalDatabase {
   Future<void> removeUser() async {
     if (_box == null) await init();
     await _box!.delete(DatabaseKeys.user);
+    await removeToken();
+  }
+
+  @override
+  Future<void> saveToken(String token) async {
+    if (_box == null) await init();
+    await saveString(DatabaseKeys.token, token);
+  }
+
+  @override
+  Future<void> removeToken() async {
+    if (_box == null) await init();
+    await remove(DatabaseKeys.token);
+  }
+
+  @override
+  String? getToken() {
+    return _box?.get(DatabaseKeys.token) as String?;
   }
 }

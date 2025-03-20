@@ -1,8 +1,11 @@
 // lib/core/utils/error_route_mapper.dart
 import 'dart:developer';
 
+import 'package:flutter/material.dart';
 import 'package:solid_skelaton/core/api/api_exceptions.dart';
+import 'package:solid_skelaton/core/di/di.dart';
 import 'package:solid_skelaton/core/navigation/app_routes.dart';
+import 'package:solid_skelaton/core/utils/snackbar_utils.dart';
 
 /// This method uses a mapping between exception types and route names to determine
 /// the route to navigate to. It returns a command that can be used with the
@@ -31,7 +34,7 @@ final Map<Type, String> errorRouteMapping = {
 ///
 /// If the error is null, or if it is not one of the above types, this method
 /// returns null.
-String? getRouteForError(dynamic error) {
+String? getRouteForError(dynamic error, BuildContext context) {
   log(error.runtimeType.toString(), name: 'getRouteForError');
   if (error == null) return null;
   if (error is ServerMaintenanceException) {
@@ -39,6 +42,10 @@ String? getRouteForError(dynamic error) {
   } else if (error is PaymentPendingException) {
     return errorRouteMapping[PaymentPendingException];
   } else if (error is SessionExpired) {
+    getIt<SnackbarUtil>().showErrorSnackbar(
+      context,
+      error.toString(),
+    );
     return errorRouteMapping[SessionExpired];
   }
   return null;

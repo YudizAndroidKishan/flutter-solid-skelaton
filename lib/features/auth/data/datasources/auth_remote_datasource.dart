@@ -1,6 +1,9 @@
 import 'package:solid_skelaton/core/constants/api_constants.dart';
+import 'package:solid_skelaton/core/database/local_database.dart';
+import 'package:solid_skelaton/core/database/local_database.dart';
 
 import '../../../../core/api/api_client.dart' show ApiClient;
+import '../../../../core/di/di.dart';
 import '../models/user_model.dart';
 
 /// An interface for remote authentication data (e.g., API calls).
@@ -29,6 +32,9 @@ class AuthRemoteDataSourceImpl implements AuthRemoteDataSource {
         'password': password,
       },
     );
+    final token = response.headers.value('authorization_token');
+
+    await getIt<LocalDatabase>().saveToken(token ?? '');
     return UserModel.fromJson(response.data);
   }
 

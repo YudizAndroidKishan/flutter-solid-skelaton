@@ -2,6 +2,8 @@ import 'dart:developer';
 
 import 'package:dio/dio.dart';
 import 'package:solid_skelaton/core/constants/api_constants.dart';
+import 'package:solid_skelaton/core/database/local_database.dart';
+import 'package:solid_skelaton/core/di/di.dart';
 
 import 'api_client.dart';
 import 'api_config.dart';
@@ -13,17 +15,27 @@ class DioApiConfig implements ApiConfig {
   String get baseUrl => ApiConstants.baseUrl;
 
   @override
-  Duration get connectTimeout => Duration(seconds: ApiConstants.connectTimeout);
+  Duration get connectTimeout => const Duration(
+        seconds: ApiConstants.connectTimeout,
+      );
 
   @override
-  Duration get receiveTimeout => Duration(seconds: ApiConstants.connectTimeout);
+  Duration get receiveTimeout => const Duration(
+        seconds: ApiConstants.connectTimeout,
+      );
 
   @override
-  Map<String, String> get defaultHeaders => {
-        'Content-Type': 'application/json',
-        'Accept': 'application/json',
-        // Add any additional headers here.
-      };
+  Map<String, String> get defaultHeaders {
+    final token = getIt<LocalDatabase>().getToken();
+    return {
+      'Content-Type': 'application/json',
+      'Accept': 'application/json',
+      if (token != null) ...{
+        'Authorization': 'Bearer $token',
+      }
+      // TODO: Add any additional headers here.``
+    };
+  }
 }
 
 /// A Dio-based implementation of the [ApiClient] interface.
@@ -178,8 +190,9 @@ class DioClient implements ApiClient {
       if (data is Map<String, dynamic>) {
         // You can choose which field to use: meta.message or error.message
         // TODO: Change it according to the API response structure
-        extractedMessage =
-            data['meta']?['message'] ?? data['error']?['message'] ?? '';
+        extractedMessage = data['meta']?['message'] ??
+            data['error']?['message'] ??
+            'Something went wrong...😔👉👈';
       }
     }
 
@@ -190,6 +203,8 @@ class DioClient implements ApiClient {
         throw ServerMaintenanceException();
       } else if (statusCode == 402) {
         throw PaymentPendingException();
+      } else if (statusCode == 401) {
+        throw SessionExpired();
       } else if (error.type == DioExceptionType.badResponse) {
         throw DescriptiveError(
           '${extractedMessage.isNotEmpty ? extractedMessage : error.response?.statusMessage}',
